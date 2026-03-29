@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -6,7 +6,16 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  search(
+    @Query('q') query?: string,
+    @Query('m') mode: string = 'all',
+  ): Promise<unknown> {
+    if (!query?.trim()) {
+      throw new BadRequestException(
+        'Missing query parameter q. Example: /?q=nestjs',
+      );
+    }
+
+    return this.appService.search(query.trim(), mode);
   }
 }
