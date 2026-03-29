@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BraveService } from './brave/brave.service';
 import { MapsService } from './maps/maps.service';
 
@@ -14,8 +14,9 @@ export class AppService {
     }
 
     if (mode === 'maps') {
-      // Placeholder for maps search implementation
+      throw new BadRequestException('Maps mode is not implemented yet.');
     }
 
+    throw new BadRequestException(`Unsupported mode: ${mode}`);
   }
 }
